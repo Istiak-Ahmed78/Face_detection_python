@@ -1,29 +1,42 @@
-import pathlib
-import cv2
-import sys
 
-imagePath=sys.argv[1]
+import cv2,sys,time,os
+# from pantilthat import *
+
 casPath="haarcascade_frontalface_default.xml"
-
 faceCaseCade=cv2.CascadeClassifier(casPath)
 
-# Reading image
-image=cv2.imread(imagePath)
-gray=cv2.cvtColor(image,cv2.COLOR_BGR2GRAY )
+# To capture video from webcam. 
+cap = cv2.VideoCapture(0)
+# To use a video file as input 
+# cap = cv2.VideoCapture('filename.mp4')
 
-# Detect faces in the image
+while True:
+    # Read the frame
+    _, img = cap.read()
 
-faces = faceCaseCade.detectMultiScale(
+    # Convert to grayscale
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Detect the faces
+    faces = faceCaseCade.detectMultiScale(
     gray,
     scaleFactor=1.1,
     minNeighbors=5,
     minSize=(30, 30),
     flags = cv2.CASCADE_SCALE_IMAGE
 )
-print ("Found {0} faces!".format(len(faces)))
 
-# Draw a rectangle around the faces
-for (x, y, w, h) in faces:
-    cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
-    cv2.imshow("Faces found", image)
-cv2.waitKey(0)
+    # Draw the rectangle around each face
+    for (x, y, w, h) in faces:
+        cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
+
+    # Display
+    cv2.imshow('img', img)
+
+    # Stop if escape key is pressed
+    k = cv2.waitKey(30) & 0xff
+    if k==27:
+        break
+        
+# Release the VideoCapture object
+cap.release()
