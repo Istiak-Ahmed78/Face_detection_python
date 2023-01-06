@@ -12,8 +12,11 @@ cap = cv2.VideoCapture(0)
 
 while True:
     # Read the frame
-    _, img = cap.read()
+    f, img = cap.read()
 
+    if not f:
+        print('We are not receiving data anymore')
+        break
     # Convert to grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
