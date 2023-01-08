@@ -7,7 +7,7 @@ faceCaseCade=cv2.CascadeClassifier(casPath)
 
 SERVO_PIN=25
 
-servo=Servo(SERVO_PIN)
+
 
 FRAME_W = 400
 FRAME_H = 300
