@@ -1,9 +1,13 @@
 
 import cv2,sys,time,os
-# from pantilthat import *
+from gpiozero import Servo
 
 casPath="haarcascade_frontalface_default.xml"
 faceCaseCade=cv2.CascadeClassifier(casPath)
+
+SERVO_PIN=25
+
+
 
 FRAME_W = 400
 FRAME_H = 300
