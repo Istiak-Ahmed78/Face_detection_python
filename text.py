@@ -1,6 +1,24 @@
 
-import cv2,sys,time,os
+import cv2, time
 from gpiozero import Servo
+import RPi.GPIO as GPIO
+# from time import sleep
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(3, GPIO.OUT)
+pwm=GPIO.PWM(3, 50)
+pwm.start(0)
+
+def SetAngle(angle):
+	duty = angle / 18 + 2
+	GPIO.output(3, True)
+	pwm.ChangeDutyCycle(duty)
+	time.sleep(1)
+	GPIO.output(3, False)
+	pwm.ChangeDutyCycle(0)
+
+pwm.stop()
+GPIO.cleanup()
 
 casPath="haarcascade_frontalface_default.xml"
 faceCaseCade=cv2.CascadeClassifier(casPath)
@@ -107,7 +125,7 @@ while True:
         trackTheClosestFace(faces)
         if(isClose(x,w,h)):
             perform()
-    cv2.imshow('img', img)
+    # cv2.imshow('img', img)
     if(isAppliedForClose()):
         break
 cap.release()
