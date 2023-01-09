@@ -91,6 +91,9 @@ def getFaces(gray):
 cap = cv2.VideoCapture(0)
 while True:
     _, img = cap.read()
+    if(not cap.isOpened()):
+        print('Camera is not found. Actually not opening.')
+        break
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces= getFaces(gray)
     for (x, y, w, h) in faces:
@@ -108,6 +111,7 @@ while True:
     if(isAppliedForClose()):
         break
 cap.release()
+cv2.destroyAllWindows()
 # Release the VideoCapture object
 
 
