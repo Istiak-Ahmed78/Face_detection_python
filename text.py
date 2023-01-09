@@ -6,18 +6,31 @@ import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(3, GPIO.OUT)
-pwm=GPIO.PWM(3, 50)
-pwm.start(0)
+GPIO.setup(13, GPIO.OUT)
+pwmHand=GPIO.PWM(3, 50)
+pwmHead=GPIO.PWM(3, 50)
+pwmHand.start(0)
+pwmHead.start(0)
 
-def SetAngle(angle):
+def rotatesHeadAngle(angle):
 	duty = angle / 18 + 2
 	GPIO.output(3, True)
-	pwm.ChangeDutyCycle(duty)
+	pwmHead.ChangeDutyCycle(duty)
 	time.sleep(1)
 	GPIO.output(3, False)
-	pwm.ChangeDutyCycle(0)
+	pwmHead.ChangeDutyCycle(0)
 
-pwm.stop()
+
+def rotatedHandAngle(angle):
+	duty = angle / 18 + 2
+	GPIO.output(3, True)
+	pwmHand.ChangeDutyCycle(duty)
+	time.sleep(1)
+	GPIO.output(3, False)
+	pwmHand.ChangeDutyCycle(0)
+
+pwmHead.stop()
+pwmHand.stop()
 GPIO.cleanup()
 
 casPath="haarcascade_frontalface_default.xml"
@@ -67,13 +80,19 @@ def trackTheClosestFace(faces):
 
 
 def perform():
-    print('Start greeting')
+    print('Neutralize head angle')
+    print('Pull hand up')
+    rotatesHeadAngle(90)
+    rotatedHandAngle(90)
+
 
 def turnLeft():
-    print('Turn left')
+    print('Rotate to left. setting head angle at 0')
+    rotatesHeadAngle(0)
 
 def turnRight():
-    print('Turn right')
+    print('Rotate to right. setting head angle at 180')
+    rotatesHeadAngle(180)
 
 def isNotAtSide(x):
     return x<260 and x>200
