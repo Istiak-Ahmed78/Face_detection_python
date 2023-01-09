@@ -1,37 +1,37 @@
 
 import cv2, time
 from gpiozero import Servo
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 # from time import sleep
 
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(3, GPIO.OUT)
-GPIO.setup(13, GPIO.OUT)
-pwmHand=GPIO.PWM(3, 50)
-pwmHead=GPIO.PWM(3, 50)
-pwmHand.start(0)
-pwmHead.start(0)
+# GPIO.setmode(GPIO.BOARD)
+# GPIO.setup(3, GPIO.OUT)
+# GPIO.setup(13, GPIO.OUT)
+# pwmHand=GPIO.PWM(3, 50)
+# pwmHead=GPIO.PWM(3, 50)
+# pwmHand.start(0)
+# pwmHead.start(0)
 
-def rotatesHeadAngle(angle):
-	duty = angle / 18 + 2
-	GPIO.output(3, True)
-	pwmHead.ChangeDutyCycle(duty)
-	time.sleep(1)
-	GPIO.output(3, False)
-	pwmHead.ChangeDutyCycle(0)
+# def rotatesHeadAngle(angle):
+	# duty = angle / 18 + 2
+	# GPIO.output(3, True)
+	# pwmHead.ChangeDutyCycle(duty)
+	# time.sleep(1)
+	# GPIO.output(3, False)
+	# pwmHead.ChangeDutyCycle(0)
 
 
-def rotatedHandAngle(angle):
-	duty = angle / 18 + 2
-	GPIO.output(3, True)
-	pwmHand.ChangeDutyCycle(duty)
-	time.sleep(1)
-	GPIO.output(3, False)
-	pwmHand.ChangeDutyCycle(0)
+# def rotatedHandAngle(angle):
+	# duty = angle / 18 + 2
+	# GPIO.output(3, True)
+	# pwmHand.ChangeDutyCycle(duty)
+	# time.sleep(1)
+	# GPIO.output(3, False)
+	# pwmHand.ChangeDutyCycle(0)
 
-pwmHead.stop()
-pwmHand.stop()
-GPIO.cleanup()
+# pwmHead.stop()
+# pwmHand.stop()
+# GPIO.cleanup()
 
 casPath="haarcascade_frontalface_default.xml"
 faceCaseCade=cv2.CascadeClassifier(casPath)
@@ -82,17 +82,17 @@ def trackTheClosestFace(faces):
 def perform():
     print('Neutralize head angle')
     print('Pull hand up')
-    rotatesHeadAngle(90)
-    rotatedHandAngle(90)
+    # rotatesHeadAngle(90)
+    # rotatedHandAngle(90)
 
 
 def turnLeft():
     print('Rotate to left. setting head angle at 0')
-    rotatesHeadAngle(0)
+    # rotatesHeadAngle(0)
 
 def turnRight():
     print('Rotate to right. setting head angle at 180')
-    rotatesHeadAngle(180)
+    # rotatesHeadAngle(180)
 
 def isNotAtSide(x):
     return x<260 and x>200
@@ -105,7 +105,7 @@ def isAppliedForClose():
     k = cv2.waitKey(30) & 0xff
     return k==27
 
-# Draw circle
+# Draw rectangle
 def drawR(img,x,y,w,h):
     cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
 
@@ -144,7 +144,7 @@ while True:
         trackTheClosestFace(faces)
         if(isClose(x,w,h)):
             perform()
-    # cv2.imshow('img', img)
+    cv2.imshow('img', img)
     if(isAppliedForClose()):
         break
 cap.release()
